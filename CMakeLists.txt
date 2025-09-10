@@ -102,20 +102,9 @@ file(DOWNLOAD "https://pypi.python.org/pypi/${PROJECT_NAME}/json" "${CMAKE_CURRE
 
 include(util)
 get_compiler_version(COMPILER)
-
-set(cmd
-    "${PYTHON_EXECUTABLE}"
-    "${CMAKE_SOURCE_DIR}/cmake/pypi_process.py"
-    "${PLUGIN}"
-    "${CMAKE_CURRENT_BINARY_DIR}/meta.json"
-    "${COMPILER}"
-)
-
-if(DEFINED VERSION_MAX AND NOT VERSION_MAX STREQUAL "")
-    list(APPEND cmd "${VERSION_MAX}")
-endif()
-
-execute_process(COMMAND "${cmd}"
+# get version and download url
+execute_process(COMMAND ${PYTHON_EXECUTABLE}
+    ${CMAKE_SOURCE_DIR}/cmake/pypi_process.py ${PLUGIN} ${CMAKE_CURRENT_BINARY_DIR}/meta.json ${COMPILER}
     OUTPUT_VARIABLE PACKAGE_DETAILS
     OUTPUT_STRIP_TRAILING_WHITESPACE
 )
